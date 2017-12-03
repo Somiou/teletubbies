@@ -69,7 +69,7 @@ public void stopRobot(){
           
             Right.setPower(-1);
             Left.setPower(-1);
-              sleep(1000);
+              sleep(600);
           
           if (colorSensor.blue() > colorSensor.red()){
               telemetry.addData("blue");
@@ -77,7 +77,7 @@ public void stopRobot(){
             
             Right.setPower(1);
             Left.setPower(-1);
-            sleep(1000);
+            sleep(600);
           }
           
           else{
@@ -86,7 +86,7 @@ public void stopRobot(){
               
               Right.setPower(-1);
               Left.setPower(1);
-              sleep(1000);
+              sleep(600);
           }   
         
           
