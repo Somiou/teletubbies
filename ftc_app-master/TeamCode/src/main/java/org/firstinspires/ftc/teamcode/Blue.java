@@ -28,7 +28,21 @@ public class Blue extends LinearOpMode {
     ColorSensor colorSensor;
 
     Servo stick;
-
+    
+    int power =1;
+    
+public void driveForward(int power, int time){
+    
+    Right.setPower(power);
+    Left.setPower(power);
+    sleep(time);
+    
+}
+    
+public void stopRobot(){
+    Right.setPower(0.0);
+    Left.setPower(0.0);
+    
     @Override
     public void runOpMode() {
         Right = hardwareMap.dcMotor.get("rightMotor");
@@ -44,11 +58,39 @@ public class Blue extends LinearOpMode {
 
 
         waitForStart();
-        /*need to decide whether to use while statements or simply follow the sequential order. It has been made known that the while
-        statements are used with sensors and human input. Is it possible to use both? We need to be certain of the tasks the robot needs
-        to complete
-        */
+       
+        colorSensor.red();
+        colorSensor.blue();
+        colorSensor.green();
+        
       while (opModeIsActive()){
+          
+          stick.setPosition(0.0);
+          
+            Right.setPower(-1);
+            Left.setPower(-1);
+              sleep(1000);
+          
+          if (colorSensor.blue() > colorSensor.red()){
+              telemetry.addData("blue");
+              telemetry.update();
+            
+            Right.setPower(1);
+            Left.setPower(-1);
+            sleep(1000);
+          }
+          
+          else{
+              telemetry.addData("red");
+              telemetry.update();
+              
+              Right.setPower(-1);
+              Left.setPower(1);
+              sleep(1000);
+          }   
+        
+          
+      }    
         
 
 
