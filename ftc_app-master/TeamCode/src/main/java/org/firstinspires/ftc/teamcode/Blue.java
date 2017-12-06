@@ -86,6 +86,13 @@ public void stopRobot(){
                   Right.setPower(1);
                   Left.setPower(-1);
                   sleep(1500);
+                  
+                  Right.setPower(1);
+                  Left.setPower(1);
+                  sleep (1000);
+                  
+                  armLift.setPower(1);
+                  lefthand.
                   */
             
             
