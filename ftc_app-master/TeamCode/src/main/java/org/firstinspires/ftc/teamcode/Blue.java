@@ -78,6 +78,17 @@ public void stopRobot(){
             Right.setPower(1);
             Left.setPower(-1);
             sleep(600);
+              
+            Right.setPower(-1);
+            Left.setPower(-1);
+              sleep(1000);
+              /*if (colorSensor.blue()){
+                  Right.setPower(1);
+                  Left.setPower(-1);
+                  sleep(1500);
+                  */
+            
+            
           }
           
           else{
@@ -87,7 +98,10 @@ public void stopRobot(){
               Right.setPower(-1);
               Left.setPower(1);
               sleep(600);
-          }   
+              
+          } 
+          
+          
         
           
       }    
