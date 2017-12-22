@@ -16,13 +16,14 @@ import java.util.Locale;
 /**
  * Created by angiecortez on 12/1/17.
  */
-@Autonomous(name = "Blue", group = "Linear OpMode")
+@Autonomous(name = "Red", group = "Linear OpMode")
 
-public class Blue extends LinearOpMode {
+public class Red extends LinearOpMode {
 
-//This code is specifically for the case in which 9681 is with the Blue alliance.
+   // This code is specifically for the case in which 9681 is with the Red alliance.
 
-    DcMotor Right;
+
+            DcMotor Right;
     DcMotor Left;
     DcMotor armLift;
     /*DcMotor leftHand;
@@ -47,7 +48,7 @@ public class Blue extends LinearOpMode {
         colorSensor = hardwareMap.colorSensor.get("sensor_color_distance");
 
         servoL = hardwareMap.servo.get("servoL");
-        
+
 
         waitForStart();
         colorSensor.red();
@@ -67,9 +68,9 @@ public class Blue extends LinearOpMode {
             Right.setPower(0);
             Left.setPower(0);
 
-            if(colorSensor.blue() > colorSensor.red()){
+            if(colorSensor.red() > colorSensor.blue()){
 
-                Right.setPower(-1);
+                 Right.setPower(-1);
                 Left.setPower(1);
 
                 sleep(600);
@@ -79,14 +80,13 @@ public class Blue extends LinearOpMode {
 
                 sleep(600);
 
-                Right.setPower(1);
-                Left.setPower(1);
+                Right.setPower(-1);
+                Left.setPower(-1);
 
                 sleep(600);
-
             }
 
-            else if (colorSensor.red() > colorSensor.blue()) {
+            else if (colorSensor.blue() > colorSensor.red()) {
                 Left.setPower(-1);
                 Right.setPower(1);
 

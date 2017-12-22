@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -17,32 +17,48 @@ public class Drive extends OpMode{
     DcMotor leftHand;
     DcMotor rightHand;
     DcMotor Left;
-    DcMotor armLift;
+   // DcMotor armLift;
+    Servo servoL;
+    Servo servoR;
 
-    int power = 1;
 
     public void init(){
 
         Right = hardwareMap.dcMotor.get("rightMotor");
-        Right.setDirection(DcMotorSimple.Direction.REVERSE);
         Left = hardwareMap.dcMotor.get("leftMotor");
-        armLift = hardwareMap.dcMotor.get("armLiftMotor");
         rightHand = hardwareMap.dcMotor.get("rightHandMotor");
         leftHand = hardwareMap.dcMotor.get("leftHandMotor");
-        //note which way the motors are placed and change direction accordingly
+        //armLift = hardwareMap.dcMotor.get("armLiftMotor")
+        servoL = hardwareMap.servo.get("servoL");
+        servoR = hardwareMap.servo.get("servoR");
 
+        Right.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftHand.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void loop() {
         float gamepad1LeftJoystickY = gamepad1.left_stick_y;
         float gamepad1RightJoystickY = gamepad1.right_stick_y;
-        float gamepad2LeftJoystickY = gamepad2.left_stick_y;
+        //float gamepad2LeftJoystickY = gamepad2.left_stick_y;
+        boolean gamepad2Y = gamepad2.y;
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;
 
-        Right.setPower(gamepad1LeftJoystickY);
-        Left.setPower(gamepad1RightJoystickY);
-        armLift.setPower(gamepad2LeftJoystickY);
+        Right.setPower(gamepad1RightJoystickY/2);
+        Left.setPower(gamepad1LeftJoystickY/2);
+        //armLift.setPower(gamepad2LeftJoystick);
+
+
+
+        if(gamepad2Y){
+            servoL.setPosition(1);
+            servoR.setPosition(0);
+        }
+        else {
+            servoL.setPosition(0);
+            servoR.setPosition(1);
+        }
+
 
         if (rightBumper) {
             rightHand.setPower(1);
@@ -58,4 +74,4 @@ public class Drive extends OpMode{
         }
 
     }
-    }
+}
