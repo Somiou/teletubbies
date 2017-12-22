@@ -13,27 +13,50 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Drive extends OpMode{
 
-    DcMotor Right;
-    DcMotor leftHand;
-    DcMotor rightHand;
-    DcMotor Left;
+    DcMotor rightBack;
+    DcMotor rightFront;
+    DcMotor leftBack;
+    DcMotor leftFront;
+    //DcMotor leftHand;
+    //DcMotor rightHand;
    // DcMotor armLift;
-    Servo servoL;
-    Servo servoR;
+    Servo servoX;
+    Servo servoRelic;
+    Servo servoTR;
+    Servo servoBR;
+    Servo servoTL;
+    Servo servoBL;
 
 
     public void init(){
 
-        Right = hardwareMap.dcMotor.get("rightMotor");
-        Left = hardwareMap.dcMotor.get("leftMotor");
-        rightHand = hardwareMap.dcMotor.get("rightHandMotor");
+        rightBack = hardwareMap.dcMotor.get("rightBackMotor");
+        rightFront = hardwareMap.dcMotor.get("rightFrontMotor")
+        leftBack = hardwareMap.dcMotor.get("leftBackMotor");
+        leftFront = hardwareMap.dcMotor.get("leftFrontMotor");
+        //wheels
+        
+        /*rightHand = hardwareMap.dcMotor.get("rightHandMotor");
         leftHand = hardwareMap.dcMotor.get("leftHandMotor");
-        //armLift = hardwareMap.dcMotor.get("armLiftMotor")
-        servoL = hardwareMap.servo.get("servoL");
-        servoR = hardwareMap.servo.get("servoR");
+        //armLift = hardwareMap.dcMotor.get("armLiftMotor")*/
+        
+        servoX = hardwareMap.servo.get("servoX");
+        servoRelic = hardwareMap.servo.get("servoRelic");
+        servoTR = harwareMap.servo.get("servoTR");
+        servoBR = hardwareMap.servo.get("servoBR");
+        servoTL = hardwareMap.servo.get("servoTL");
+        servoBL = harwareMap.servo.get("servoBL");
 
         Right.setDirection(DcMotorSimple.Direction.REVERSE);
         leftHand.setDirection(DcMotorSimple.Direction.REVERSE);
+    }
+    
+    public void test() {
+        
+    }
+
+    public void holonomic() {
+        
     }
 
     public void loop() {
