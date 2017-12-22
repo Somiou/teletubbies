@@ -21,6 +21,11 @@ import java.util.Locale;
 public class Blue extends LinearOpMode {
 
 //This code is specifically for the case in which 9681 is with the Blue alliance.
+    
+    public static final String TAG = "Vuforia Navigation Sample";
+
+    OpenGLMatrix lastLocation = null;
+    VuforiaLocalizer vuforia;
 
     DcMotor Right;
     DcMotor Left;
