@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer
 
 import java.util.Locale;
 /**
@@ -22,7 +23,7 @@ public class Blue extends LinearOpMode {
 
 //This code is specifically for the case in which 9681 is with the Blue alliance.
     
-    public static final String TAG = "Vuforia Navigation Sample";
+    public static final String TAG = "Vuforia Navigation";
 
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
