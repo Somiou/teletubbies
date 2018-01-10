@@ -11,7 +11,20 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
 
 import java.util.Locale;
 /**
@@ -22,112 +35,111 @@ import java.util.Locale;
 public class Blue extends LinearOpMode {
 
 //This code is specifically for the case in which 9681 is with the Blue alliance.
-    
-    public static final String TAG = "Vuforia Navigation";
 
-    OpenGLMatrix lastLocation = null;
-    VuforiaLocalizer vuforia;
+    DcMotor rightBack;
+    DcMotor rightFront;
+    DcMotor leftBack;
+    DcMotor leftFront; //wheels
 
-    DcMotor Right;
-    DcMotor Left;
-    DcMotor armLift;
-    /*DcMotor leftHand;
-    DcMotor rightHand;*/
+    Servo servoJ; //jewel servo
+    Servo servoRelicL;
+    Servo servoRelicR;
+    Servo servoTR; //top right glyph
+    Servo servoBR; //bottom right glyph
+    Servo servoTL; //top lefft glyph
+    Servo servoBL; //bottom left glyph
 
-    ColorSensor colorSensor;
+  public static final String TAG = "Vuforia VuMark Sample";
 
-    Servo servoL;
+        OpenGLMatrix lastLocation = null;
 
+        /**
+         * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
+         * localization engine.
+         */
+        VuforiaLocalizer vuforia;
 
-    @Override
 
     public void runOpMode() {
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        parameters.vuforiaLicenseKey = "AcjH1In/////AAAAmYwGXyS19k5kphquE2greh1PddtVginGOpWXxzcDoQ3vKFIwk1DXl+zJZOzldi+1m6zYq4UnEyLXyBJQjY6U/S3gNcOg055cHawm3EI2P0HtVbx8OFuBnyOGZPylg+3GWex1Q/XR4Agsxv+3OHYQP8g5N4IqFe3lUmaqVmDYzS5xn3ndKhdUOgqb91bklCgx+u4Rh7p/58OMSeP29z1MIDBHzQ+Ym+ycUh6B6D2B19GZhk83IPTFGRio99alSqziokPrghonSUj0sZaM3uUQJq3PP1OS5ouMS8Y9OY8td7N6Sp8AhcRnAUDahgAdJnuSlG8AmW6IPBaEB9TT50/MpBpHLKZi03/01sCJuzKnox0i";
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-        VuforiaTrackables stonesAndChips = this.vuforia.loadTrackablesFromAsset("StonesAndChips");
-        VuforiaTrackable redTarget = stonesAndChips.get(0);
-        redTarget.setName("RedTarget");  // Stones
-        List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
-        allTrackables.addAll(stonesAndChips);
+        rightBack = hardwareMap.dcMotor.get("rightBackMotor");
+        rightFront = hardwareMap.dcMotor.get("rightFrontMotor");
+        leftFront = hardwareMap.dcMotor.get("leftFrontMotor");
+        leftBack = hardwareMap.dcMotor.get("leftBack");
 
-        float mmPerInch        = 25.4f;
-        float mmBotWidth       = 18 * mmPerInch;            // ... or whatever is right for your robot
-        float mmFTCFieldWidth  = (12*12 - 2) * mmPerInch;   // the FTC field is ~11'10" center-to-center of the glass panels
-
-        OpenGLMatrix redTargetLocationOnField = OpenGLMatrix
-                /* Then we translate the target off to the RED WALL. Our translation here
-                is a negative translation in X.*/
-                .translation(-mmFTCFieldWidth/2, 0, 0)
-                .multiplied(Orientation.getRotationMatrix(
-                        /* First, in the fixed (field) coordinate system, we rotate 90deg in X, then 90 in Z */
-                        AxesReference.EXTRINSIC, AxesOrder.XZX,
-                        AngleUnit.DEGREES, 90, 90, 0));
-        redTarget.setLocation(redTargetLocationOnField);
-        RobotLog.ii(TAG, "Red Target=%s", format(redTargetLocationOnField));
-
-        OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
-                .translation(mmBotWidth/2,0,0)
-                .multiplied(Orientation.getRotationMatrix(
-                        AxesReference.EXTRINSIC, AxesOrder.YZY,
-                        AngleUnit.DEGREES, -90, 0, 0));
-        RobotLog.ii(TAG, "phone=%s", format(phoneLocationOnRobot));
-
-        ((VuforiaTrackableDefaultListener)redTarget.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
-        ((VuforiaTrackableDefaultListener)blueTarget.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
-
-        telemetry.addData(">", "Press Play to start tracking");
-        telemetry.update();
-        waitForStart();
-
-        /** Start tracking the data sets we care about. */
-        stonesAndChips.activate();
-
-
-
-        Right = hardwareMap.dcMotor.get("rightMotor");
-        Left = hardwareMap.dcMotor.get("leftMotor");
-        armLift = hardwareMap.dcMotor.get("armLiftMotor");
-        /*leftHand = hardwareMap.dcMotor.get("leftHandMotor");
-        rightHand = hardwareMap.dcMotor.get("rightHandMotor");*/
         Right.setDirection(DcMotorSimple.Direction.REVERSE);
 
         colorSensor = hardwareMap.colorSensor.get("sensor_color_distance");
 
-        servoL = hardwareMap.servo.get("servoL");
-        
+        servoJ = hardwareMap.servo.get("servoJ");
+        servoRelicL = hardwareMap.servo.get("servoRelicL");
+        servoRelicR = hardwareMap.servo.get("servoRelicR");
+        servoTR = hardwareMap.servo.get("servoTR");
+        servoBR = hardwareMap.servo.get("servoBR");
+        servoTL = hardwareMap.servo.get("servoTL");
+        servoBL = hardwareMap.servo.get("servoBL");
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        // OR...  Do Not Activate the Camera Monitor View, to save power
+        // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+        parameters.vuforiaLicenseKey = "AcjH1In/////AAAAmYwGXyS19k5kphquE2greh1PddtVginGOpWXxzcDoQ3vKFIwk1DXl+zJZOzldi+1m6zYq4UnEyLXyBJQjY6U/S3gNcOg055cHawm3EI2P0HtVbx8OFuBnyOGZPylg+3GWex1Q/XR4Agsxv+3OHYQP8g5N4IqFe3lUmaqVmDYzS5xn3ndKhdUOgqb91bklCgx+u4Rh7p/58OMSeP29z1MIDBHzQ+Ym+ycUh6B6D2B19GZhk83IPTFGRio99alSqziokPrghonSUj0sZaM3uUQJq3PP1OS5ouMS8Y9OY8td7N6Sp8AhcRnAUDahgAdJnuSlG8AmW6IPBaEB9TT50/MpBpHLKZi03/01sCJuzKnox0i";
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+
+        /**
+         * Load the data set containing the VuMarks for Relic Recovery. There's only one trackable
+         * in this data set: all three of the VuMarks in the game were created from this one template,
+         * but differ in their instance id information.
+         * @see VuMarkInstanceId
+         */
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+
+        telemetry.addData(">", "Press Play to start");
+        telemetry.update();
+
+
+        relicTrackables.activate();
+
 
         waitForStart();
         colorSensor.red();
         colorSensor.green();
         colorSensor.blue();
+        relicTrackables.activate();
 
         while (opModeIsActive()) {
-
-            for (VuforiaTrackable trackable : allTrackables) {
-                /**
-                 * getUpdatedRobotLocation() will return null if no new information is available since
-                 * the last time that call was made, or if the trackable is not currently visible.
-                 * getRobotLocation() will return null if the trackable is not currently visible.
-                 */
-                telemetry.addData(trackable.getName(), ((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible() ? "Visible" : "Not Visible");    //
-
-                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
-                if (robotLocationTransform != null) {
-                    lastLocation = robotLocationTransform;
-                }
+            
+            //knocking off jewel
+            servoJ.setPosition(0);
+            
+            if (colorSensor.blue() > colorSensor.red()){
+                rightFront.setPower(1);
+                
             }
-            /**
-             * Provide feedback as to where the robot was last located (if we know).
-             */
-            if (lastLocation != null) {
-                //  RobotLog.vv(TAG, "robot=%s", format(lastLocation));
-                telemetry.addData("Pos", format(lastLocation));
-            } else {
-                telemetry.addData("Pos", "Unknown");
+            
+            
+        
+
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+
+             vuMark == "Right" then{
+                    
+                }
+
+                /* Found an instance of the template. In the actual game, you will probably
+                 * loop until this condition occurs, then move on to act accordingly depending
+                 * on which VuMark was visible. */
+                telemetry.addData("VuMark", "%s visible", vuMark);
+
+
+            }
+            else {
+                telemetry.addData("VuMark", "not visible");
             }
             telemetry.update();
 
@@ -181,7 +193,7 @@ public class Blue extends LinearOpMode {
             else {
                 Left.setPower(0);
                 Right.setPower(0);
-            }*/
+            }
 
             //for parking in the crypt
 
@@ -193,7 +205,7 @@ public class Blue extends LinearOpMode {
             Right.setPower(0);
             Left.setPower(0);
 
-            sleep(600);
+            sleep(600);*/
         }
 
 
