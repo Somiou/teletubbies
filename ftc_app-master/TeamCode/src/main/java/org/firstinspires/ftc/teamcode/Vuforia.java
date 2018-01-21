@@ -51,8 +51,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 public class Vuforia extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
-
+    
     OpenGLMatrix lastLocation = null;
+    double tX; //X value of the distance from the target of our robot
+    double tY; //Y value of the distance from the target of our robot
+    double tZ; //Z value of the dist from target of our robot
+
+    double rX; //X value extracted from rotational values between target and robot
+    double rY; //Y value for rotation
+    double rZ; //Z value for rotation
 
     VuforiaLocalizer vuforia;
 
@@ -64,9 +71,8 @@ public class Vuforia extends LinearOpMode {
 
         parameters.vuforiaLicenseKey = "AVO4i6L/////AAAAmS3NIQor/U/hoS3IOi1+kj4127qnClMIEjRXKzXGuSQqFWDEHRth5DX5O92pZlUwFq8ANd87CIcf8FRU27m8ra1BsSrjRjtdBCJ0Vd5FOK3deAG1casus06ri5LA1QIojCfPm3A+JXZ1t6J7CRT8O74hA25Ga2VdJaFXX/bZdw0z2gr3N3UHNElZMO9E1h5Qt/+IqcH6SP5iUJSXrKuY0ls6ENV1BCskVvWARWIYI5CELGzK4xYBdtlYYo7O4A+pnZXFuKuoIVzUw8OC4kkCRewJ7a/BsnBJ2DhQfkmm8/HeOc0w1a5m0/hMbrDIqkGsuOo28j0gWTtRTx+2CLOPdMde8nDd2Re77aL7KUDBkoeK";
 
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-
 
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
@@ -82,8 +88,49 @@ public class Vuforia extends LinearOpMode {
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-
                 telemetry.addData("VuMark", "%s visible", vuMark);
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose(); //Get Positional Values
+
+                telemetry.addData ("Pose", format (pose));
+
+                if (pose != null){
+                    VectorF trans = pose.getTranslation ();
+                    Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES) ;
+
+                    tX = trans.get (0);
+                    tY = trans.get (1);
+                    tZ = trans.get (2);
+                    //Get distance from Robot to Target
+
+                    rX = rot.firstAngle;
+                    rY = rot.secondAngle;
+                    rZ = rot.thirdAngle;
+                    //get rotation factors of target from robot
+                }
+                
+                if(vuMark == RelicRecoveryVuMark.LEFT)
+                { //Test to see if Left image and give directions
+                    telemetry.addData ("VuMark is", "LEFT");
+                    telemetry.addData ("X =", tX);
+                    telemetry.addData ("Y =", tY);
+                    telemetry.addData ("Z =", tZ);
+                }
+                else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                { //Test to see if Right image and give directions
+                    telemetry.addData ("VuMark is", "RIGHT");
+                    telemetry.addData ("X =", tX);
+                    telemetry.addData ("Y =", tY);
+                    telemetry.addData ("Z =", tZ);
+                }
+                else if (vuMark == RelicRecoveryVuMark.CENTER)
+                {
+                    telemetry.addData ("VuMark is", "CENTER");
+                    telemetry.addData ("X =", tX);
+                    telemetry.addData ("Y =", tY);
+                    telemetry.addData ("Z =", tZ);
+                }
+
+  
 
             } else {
                 telemetry.addData("VuMark", "not visible");
