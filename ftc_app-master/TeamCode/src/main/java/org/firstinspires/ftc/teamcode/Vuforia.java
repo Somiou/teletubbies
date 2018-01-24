@@ -114,6 +114,9 @@ public class Vuforia extends LinearOpMode {
                     telemetry.addData ("X =", tX);
                     telemetry.addData ("Y =", tY);
                     telemetry.addData ("Z =", tZ);
+                    telemetry.addData ("rX =", rX);
+                    telemetry.addData ("rY =", rY);
+                    telemetry.addData ("rZ =", rZ);
                 }
                 else if (vuMark == RelicRecoveryVuMark.RIGHT)
                 { //Test to see if Right image and give directions
@@ -121,6 +124,9 @@ public class Vuforia extends LinearOpMode {
                     telemetry.addData ("X =", tX);
                     telemetry.addData ("Y =", tY);
                     telemetry.addData ("Z =", tZ);
+                    telemetry.addData ("rX =", rX);
+                    telemetry.addData ("rY =", rY);
+                    telemetry.addData ("rZ =", rZ);
                 }
                 else if (vuMark == RelicRecoveryVuMark.CENTER)
                 {
@@ -128,6 +134,9 @@ public class Vuforia extends LinearOpMode {
                     telemetry.addData ("X =", tX);
                     telemetry.addData ("Y =", tY);
                     telemetry.addData ("Z =", tZ);
+                    telemetry.addData ("rX =", rX);
+                    telemetry.addData ("rY =", rY);
+                    telemetry.addData ("rZ =", rZ);
                 }
 
   
