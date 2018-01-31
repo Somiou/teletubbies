@@ -18,22 +18,21 @@ public class Drive extends OpMode{
     DcMotor frontLeft;
     DcMotor backLeft;
     DcMotor backRight;
-
-    Servo servoJ; //Jewel servo
-    Servo servoRelicL; // Relic mechanism
-    Servo servoRelicR; // Relic mechanism
-    Servo servoTR; //Top right clamp
-    Servo servoBR; //Bottom right glyph
-    Servo servoTL; //Top left glyph
-    Servo servoBL; //Bottom left glyph
-
-
+    DcMotor glyphMotorL;
+    DcMotor glyphMotorR;
+    DcMotor treadMotorR;
+    DcMotor treadMotorL;
+   
     public void init(){
 
         frontRight = hardwareMap.dcMotor.get("frontRightMotor");
         frontLeft = hardwareMap.dcMotor.get("frontLeftMotor");
         backRight = hardwareMap.dcMotor.get("backRightMotor");
         backLeft = hardwareMap.dcMotor.get("backLeftMotor");
+        glyphMotorL = hardwareMap.dcMotor.get("glyphMotorL");
+        glyphMotorR = hardwareMap.dcMotor.get("glyphMotorR");
+        treadMotorL = hardwareMap.dcMotor.get("treadMotorL");
+        treadMotorR = hardwareMap.dcMotor.get("treadMotorR");
 
     }
 
@@ -51,12 +50,47 @@ public class Drive extends OpMode{
         double bRightPower = Range.clip(move - rotation - crabWalk, -1.0, 1.0);
 
         //Assignment of motor power in relation to wheels
-        frontRight.setPower(fLeftPower);
-        backLeft.setPower(bLeftPower);
-        frontRight.setPower(fRightPower);
-        backRight.setPower(bRightPower);
+        frontRight.setPower(fLeftPower/2);
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setPower(bLeftPower/2);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRight.setPower(fRightPower/2);
+        backRight.setPower(bRightPower/2);
+        
+        //Assignment of motor power in relation to glyph intake mechanism
+        glyphMotorR.setDirection(DcMotorSimple.Direction.REVERSE);
+        
 
+        if (gamepad1.right_bumper){
+            glyphMotorL.setPower(1);
+            glyphMotorR.setPower(1);
+        }
 
+        else if (gamepad1.left_bumper){
+            glyphMotorL.setPower(-1);
+            glyphMotorR.setPower(-1);
+        }
+
+            else {
+                glyphMotorL.setPower(0);
+                glyphMotorR.setPower(0);
+        }
+        
+        //Assignment of motor power in relation to glyph
+        if (gamepad1.right_trigger){
+            treadMotorL.setPower(1);
+            treadMotorR.setPower(1);
+        }
+        
+        else if (gamepad1.left_trigger){
+            treadMotorL.setPower(-1);
+            treadMotorR.setPower(-1);
+        }
+        
+        else {
+            treadMotorL.setPower(0);
+            treadMotorR.setPower(0);
+        
 
     }
 
