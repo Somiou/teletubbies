@@ -40,14 +40,11 @@ public class Blue extends LinearOpMode {
     DcMotor rightFront;
     DcMotor leftBack;
     DcMotor leftFront; //wheels
+    DcMotor glyphMotorR;
+    DcMotor glyphMotorL;
 
     Servo servoJ; //jewel servo
-    Servo servoRelicL;
-    Servo servoRelicR;
-    Servo servoTR; //top right glyph
-    Servo servoBR; //bottom right glyph
-    Servo servoTL; //top lefft glyph
-    Servo servoBL; //bottom left glyph
+    
 
   public static final String TAG = "Vuforia VuMark Sample";
 
@@ -65,45 +62,18 @@ public class Blue extends LinearOpMode {
         rightBack = hardwareMap.dcMotor.get("rightBackMotor");
         rightFront = hardwareMap.dcMotor.get("rightFrontMotor");
         leftFront = hardwareMap.dcMotor.get("leftFrontMotor");
-        leftBack = hardwareMap.dcMotor.get("leftBack");
+        leftBack = hardwareMap.dcMotor.get("leftBackMotor");
+        glyphMotorL = hardwareMap.dcMotor.get("glyphMotorL");
+        glyphMotorR = hardwareMap.dcMotor.get("glyphMotorR");
 
-        Right.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         colorSensor = hardwareMap.colorSensor.get("sensor_color_distance");
 
         servoJ = hardwareMap.servo.get("servoJ");
-        servoRelicL = hardwareMap.servo.get("servoRelicL");
-        servoRelicR = hardwareMap.servo.get("servoRelicR");
-        servoTR = hardwareMap.servo.get("servoTR");
-        servoBR = hardwareMap.servo.get("servoBR");
-        servoTL = hardwareMap.servo.get("servoTL");
-        servoBL = hardwareMap.servo.get("servoBL");
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        // OR...  Do Not Activate the Camera Monitor View, to save power
-        // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-
-        parameters.vuforiaLicenseKey = "AcjH1In/////AAAAmYwGXyS19k5kphquE2greh1PddtVginGOpWXxzcDoQ3vKFIwk1DXl+zJZOzldi+1m6zYq4UnEyLXyBJQjY6U/S3gNcOg055cHawm3EI2P0HtVbx8OFuBnyOGZPylg+3GWex1Q/XR4Agsxv+3OHYQP8g5N4IqFe3lUmaqVmDYzS5xn3ndKhdUOgqb91bklCgx+u4Rh7p/58OMSeP29z1MIDBHzQ+Ym+ycUh6B6D2B19GZhk83IPTFGRio99alSqziokPrghonSUj0sZaM3uUQJq3PP1OS5ouMS8Y9OY8td7N6Sp8AhcRnAUDahgAdJnuSlG8AmW6IPBaEB9TT50/MpBpHLKZi03/01sCJuzKnox0i";
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-
-        /**
-         * Load the data set containing the VuMarks for Relic Recovery. There's only one trackable
-         * in this data set: all three of the VuMarks in the game were created from this one template,
-         * but differ in their instance id information.
-         * @see VuMarkInstanceId
-         */
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
-
-        telemetry.addData(">", "Press Play to start");
         telemetry.update();
-
-
-        relicTrackables.activate();
-
 
         waitForStart();
         colorSensor.red();
@@ -120,28 +90,10 @@ public class Blue extends LinearOpMode {
                 rightFront.setPower(1);
                 
             }
-            
-            
-        
-
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-
-             vuMark == "Right" then{
-                    
-                }
-
-                /* Found an instance of the template. In the actual game, you will probably
-                 * loop until this condition occurs, then move on to act accordingly depending
-                 * on which VuMark was visible. */
-                telemetry.addData("VuMark", "%s visible", vuMark);
-
-
+            else (colorSensor.red() > colorSensor.blue()){
+                
             }
-            else {
-                telemetry.addData("VuMark", "not visible");
-            }
-            telemetry.update();
+            
 
             //For using the REV color distance sensor to knock off jewel
             /*servoL.setPosition(0);
@@ -209,7 +161,5 @@ public class Blue extends LinearOpMode {
         }
 
 
-        String format(OpenGLMatrix transformationMatrix) {
-            return transformationMatrix.formatAsTransform();
     }
 }
