@@ -61,71 +61,34 @@ public class Red extends LinearOpMode {
         colorSensor.blue();
 
         while (opModeIsActive()) {
+           
+           //to knock off blue jewel
 
-            
-            
-            //For using the REV color distance sensor to knock off jewel
-            /*servoL.setPosition(0);
-
-            Right.setPower(-1);
-            Left.setPower(-1);
-
-            sleep(600);
-
-            Right.setPower(0);
-            Left.setPower(0);
-
-            if(colorSensor.red() > colorSensor.blue()){
-
-                 Right.setPower(-1);
-                Left.setPower(1);
-
-                sleep(600);
-
-                Right.setPower(0);
-                Left.setPower(0);
-
-                sleep(600);
-
-                Right.setPower(-1);
-                Left.setPower(-1);
-
-                sleep(600);
-            }
-
-            else if (colorSensor.blue() > colorSensor.red()) {
-                Left.setPower(-1);
-                Right.setPower(1);
-
-                sleep(600);
-
-                Right.setPower(0);
-                Left.setPower(0);
-
-                sleep(600);
-
-                Right.setPower(-1);
-                Left.setPower(-1);
-
-                sleep(600);
-            }
-
-            else {
-                Left.setPower(0);
-                Right.setPower(0);
-            }*/
-
-            //for parking in the crypt
-
-            Right.setPower(-0.5);
-            Left.setPower(-0.5);
-
-            sleep(600);
-
-            Right.setPower(0);
-            Left.setPower(0);
-
-            sleep(600);
+           servoJ.setPosition(0);
+           
+           if(colorSensor.blue() > colorSensor.red()){
+              frontRight.setPower(1);
+              frontLeft.setPower(1);
+              backRight.setPower(1);
+              backLeft.setPower(1);
+           }
+           
+           else if(colorSensor.red() > colorSensor.blue()){
+              backRight.setPower(-1);
+              frontLeft.setPower(-1);
+              frontRight.setPower(-1);
+              backLeft.setPower(-1);
+           }
+           
+           else {
+              backRight.setPower(0);
+              backLeft.setPower(0);
+              frontRight.setPower(0);
+              frontLeft.setPower(0);
+           }
+           
+           
+           
         }
     }
 }
