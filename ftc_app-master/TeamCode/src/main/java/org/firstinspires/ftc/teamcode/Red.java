@@ -27,12 +27,13 @@ public class Red extends LinearOpMode {
     DcMotor frontLeft;
     DcMotor backRight;
     DcMotor backLeft;
-    DcMotor glyphMotorL;
-    DcMotor glyphMotorR;
+    DcMotor treadL;
+    DcMotor treadR;
 
     ColorSensor colorSensor;
 
     Servo servoJ;
+    CRServo glyphServo;
 
     @Override
 
@@ -46,12 +47,13 @@ public class Red extends LinearOpMode {
         frontLeft = hardwareMap.dcMotor.get("frontLeftMotor");
         backLeft = hardwareMap.dcMotor.get("backLeftMotor");
         backLeft = hardwareMap.dcMotor.get("leftHandMotor");
-        glyphMotorL = hardwareMap.dcMotor.get("glyphMotorL");
-        glyphMotorR = hardwareMap.dcMotor.get("glyphMotorR");
-        Right.setDirection(DcMotorSimple.Direction.REVERSE);
+        treadL = hardwareMap.dcMotor.get("treadL");
+        treadR = hardwareMap.dcMotor.get("treadR");
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         colorSensor = hardwareMap.colorSensor.get("sensor_color_distance");
-
+       
+        glyphServo = hardwareMap.servo.get("glyphServo");
         servoJ = hardwareMap.servo.get("servoJ");
 
 
@@ -67,17 +69,17 @@ public class Red extends LinearOpMode {
            servoJ.setPosition(0);
            
            if(colorSensor.blue() > colorSensor.red()){
-              frontRight.setPower(1);
-              frontLeft.setPower(1);
-              backRight.setPower(1);
-              backLeft.setPower(1);
+              frontRight.setPower(move);
+              frontLeft.setPower(move);
+              backRight.setPower(move);
+              backLeft.setPower(move);
            }
            
            else if(colorSensor.red() > colorSensor.blue()){
-              backRight.setPower(-1);
-              frontLeft.setPower(-1);
-              frontRight.setPower(-1);
-              backLeft.setPower(-1);
+              backRight.setPower(-move);
+              frontLeft.setPower(-move);
+              frontRight.setPower(-move);
+              backLeft.setPower(-move);
            }
            
            else {
