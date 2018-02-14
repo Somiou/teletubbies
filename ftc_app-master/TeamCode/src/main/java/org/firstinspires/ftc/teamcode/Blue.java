@@ -36,13 +36,14 @@ public class Blue extends LinearOpMode {
 
 //This code is specifically for the case in which 9681 is with the Blue alliance.
 
-    DcMotor rightBack;
-    DcMotor rightFront;
-    DcMotor leftBack;
-    DcMotor leftFront; //wheels
-    DcMotor glyphMotorR;
-    DcMotor glyphMotorL;
+    DcMotor backRight;
+    DcMotor frontRight;
+    DcMotor backLeft;
+    DcMotor frontLeft; //wheels
+    DcMotor treadR;
+    DcMotor treadL;
 
+    CRServo glyphServo;
     Servo servoJ; //jewel servo
     
 
@@ -59,18 +60,19 @@ public class Blue extends LinearOpMode {
 
     public void runOpMode() {
 
-        rightBack = hardwareMap.dcMotor.get("rightBackMotor");
-        rightFront = hardwareMap.dcMotor.get("rightFrontMotor");
-        leftFront = hardwareMap.dcMotor.get("leftFrontMotor");
-        leftBack = hardwareMap.dcMotor.get("leftBackMotor");
-        glyphMotorL = hardwareMap.dcMotor.get("glyphMotorL");
-        glyphMotorR = hardwareMap.dcMotor.get("glyphMotorR");
+        backRight = hardwareMap.dcMotor.get("backRightMotor");
+        frontRight = hardwareMap.dcMotor.get("frontRightMotor");
+        frontLeft = hardwareMap.dcMotor.get("frontLeftMotor");
+        backLeft = hardwareMap.dcMotor.get("backLeftMotor");
+        treadL = hardwareMap.dcMotor.get("treadL");
+        treadR = hardwareMap.dcMotor.get("treadL")
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         colorSensor = hardwareMap.colorSensor.get("sensor_color_distance");
 
+        glyphServo = hardwareMap.crservo.get("glyphServo");
         servoJ = hardwareMap.servo.get("servoJ");
 
         telemetry.update();
@@ -86,78 +88,27 @@ public class Blue extends LinearOpMode {
             //knocking off jewel
             servoJ.setPosition(0);
             
-            if (colorSensor.blue() > colorSensor.red()){
-                rightFront.setPower(1);
+            if (colorSensor.red() > colorSensor.blue()){
+                frontRight.setPower(move);
+                frontLeft.setPower(move);
+                backRight.setPower(move);
+                backLeft.setPower(move);
                 
             }
-            else (colorSensor.red() > colorSensor.blue()){
-                
+            else if(colorSensor.blue() > colorSensor.red()){
+                frontRight.setPower(-move);
+                frontLeft.setPower(-move);
+                backRight.setPower(-move);
+                backLeft.setPower(-move);
             }
-            
-
-            //For using the REV color distance sensor to knock off jewel
-            /*servoL.setPosition(0);
-
-            Right.setPower(-1);
-            Left.setPower(-1);
-
-            sleep(600);
-
-            Right.setPower(0);
-            Left.setPower(0);
-
-            if(colorSensor.blue() > colorSensor.red()){
-
-                Right.setPower(-1);
-                Left.setPower(1);
-
-                sleep(600);
-
-                Right.setPower(0);
-                Left.setPower(0);
-
-                sleep(600);
-
-                Right.setPower(1);
-                Left.setPower(1);
-
-                sleep(600);
-
+            else{
+                frontRight.setPower(0);
+                frontLeft.setPower(0);
+                backRight.setPower(0);
+                backLeft,setPower(0);
             }
 
-            else if (colorSensor.red() > colorSensor.blue()) {
-                Left.setPower(-1);
-                Right.setPower(1);
-
-                sleep(600);
-
-                Right.setPower(0);
-                Left.setPower(0);
-
-                sleep(600);
-
-                Right.setPower(-1);
-                Left.setPower(-1);
-
-                sleep(600);
-            }
-
-            else {
-                Left.setPower(0);
-                Right.setPower(0);
-            }
-
-            //for parking in the crypt
-
-            Right.setPower(-0.5);
-            Left.setPower(-0.5);
-
-            sleep(600);
-
-            Right.setPower(0);
-            Left.setPower(0);
-
-            sleep(600);*/
+           
         }
 
 
