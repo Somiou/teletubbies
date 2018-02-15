@@ -65,7 +65,7 @@ public class Blue extends LinearOpMode {
         frontLeft = hardwareMap.dcMotor.get("frontLeftMotor");
         backLeft = hardwareMap.dcMotor.get("backLeftMotor");
         treadL = hardwareMap.dcMotor.get("treadL");
-        treadR = hardwareMap.dcMotor.get("treadL")
+        treadR = hardwareMap.dcMotor.get("treadR")
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -107,6 +107,9 @@ public class Blue extends LinearOpMode {
                 backRight.setPower(0);
                 backLeft,setPower(0);
             }
+            
+            //Vuforia plan
+            /* if 
 
            
         }
