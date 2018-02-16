@@ -61,7 +61,7 @@ public class Red extends LinearOpMode {
         colorSensor.red();
         colorSensor.green();
         colorSensor.blue();
-       
+       /*
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -74,7 +74,7 @@ public class Red extends LinearOpMode {
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
-       
+       */
        
         while (opModeIsActive()) {
            
@@ -103,7 +103,7 @@ public class Red extends LinearOpMode {
            }
            
            //Vuforia
-           RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+           /*RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                 telemetry.addData("VuMark", "%s visible", vuMark);
                 OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose(); //Get Positional Values
@@ -162,7 +162,7 @@ public class Red extends LinearOpMode {
             } else {
                 telemetry.addData("VuMark", "not visible");
             }
-           
+           */
         }
     }
 }
