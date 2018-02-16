@@ -35,7 +35,7 @@ public class Drive extends OpMode{
         treadL = hardwareMap.dcMotor.get("treadL");
         treadR = hardwareMap.dcMotor.get("treadR");
         
-        servoJ = hardwareMap.dcMotor.get("sevoJ");
+        servoJ = hardwareMap.servo.get("sevoJ");
 
     }
 
