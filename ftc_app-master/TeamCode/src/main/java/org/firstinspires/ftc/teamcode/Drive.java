@@ -18,10 +18,12 @@ public class Drive extends OpMode{
     DcMotor frontLeft;
     DcMotor backLeft;
     DcMotor backRight;
-    DcMotor glyphMotorL;
-    DcMotor glyphMotorR;
-    DcMotor treadMotorR;
-    DcMotor treadMotorL;
+    DcMotor glyphMotor;
+    DcMotor treadR;
+    DcMotor treadL;
+    
+    Servo servoJ;
+    
    
     public void init(){
 
@@ -29,10 +31,11 @@ public class Drive extends OpMode{
         frontLeft = hardwareMap.dcMotor.get("frontLeftMotor");
         backRight = hardwareMap.dcMotor.get("backRightMotor");
         backLeft = hardwareMap.dcMotor.get("backLeftMotor");
-        glyphMotorL = hardwareMap.dcMotor.get("glyphMotorL");
-        glyphMotorR = hardwareMap.dcMotor.get("glyphMotorR");
-        treadMotorL = hardwareMap.dcMotor.get("treadMotorL");
-        treadMotorR = hardwareMap.dcMotor.get("treadMotorR");
+        glyphMotor = hardwareMap.dcMotor.get("glyphMotor");
+        treadL = hardwareMap.dcMotor.get("treadL");
+        treadR = hardwareMap.dcMotor.get("treadR");
+        
+        servoJ = hardwareMap.dcMotor.get("sevoJ");
 
     }
 
@@ -61,14 +64,9 @@ public class Drive extends OpMode{
         glyphMotorR.setDirection(DcMotorSimple.Direction.REVERSE);
         
 
-        if (gamepad1.right_bumper){
+        if (gamepad1.left_bumper){
             glyphMotorL.setPower(1);
             glyphMotorR.setPower(1);
-        }
-
-        else if (gamepad1.left_bumper){
-            glyphMotorL.setPower(-1);
-            glyphMotorR.setPower(-1);
         }
 
             else {
@@ -78,13 +76,13 @@ public class Drive extends OpMode{
         
         //Assignment of motor power in relation to glyph
         if (gamepad1.right_trigger){
-            treadMotorL.setPower(1);
-            treadMotorR.setPower(1);
+            treadL.setPower(1);
+            treadR.setPower(1);
         }
         
         else if (gamepad1.left_trigger){
-            treadMotorL.setPower(-1);
-            treadMotorR.setPower(-1);
+            treadL.setPower(-1);
+            treadR.setPower(-1);
         }
         
         else {
