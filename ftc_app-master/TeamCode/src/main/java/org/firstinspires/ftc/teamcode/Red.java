@@ -14,13 +14,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.Locale;
 /**
- * Created by angiecortez on 12/1/17.
+ * Created by angiecortez on 2/16/18.
  */
 @Autonomous(name = "Red", group = "Linear OpMode")
 
 public class Red extends LinearOpMode {
 
-   // This code is specifically for the case in which 9681 is with the Red alliance.
+    // This code is specifically for the case in which 9681 is with the Red alliance.
 
 
     DcMotor frontRight;
@@ -29,31 +29,30 @@ public class Red extends LinearOpMode {
     DcMotor backLeft;
     DcMotor treadL;
     DcMotor treadR;
+    DcMotor glyphMotor;
 
     ColorSensor colorSensor;
-
     Servo servoJ;
-    CRServo glyphServo;
+
 
     @Override
 
     public void runOpMode() {
 
-        
 
-        frontRight = hardwareMap.dcMotor.get("frontRightMotor");
-        frontLeft = hardwareMap.dcMotor.get("frontLeftMotor");
-        backLeft = hardwareMap.dcMotor.get("backLeftMotor");
-        backLeft = hardwareMap.dcMotor.get("leftHandMotor");
+        frontRight = hardwareMap.dcMotor.get("frontRight");
+        frontLeft = hardwareMap.dcMotor.get("frontLeft");
+        backLeft = hardwareMap.dcMotor.get("backLeft");
+        backRight = hardwareMap.dcMotor.get("backRight");
         treadL = hardwareMap.dcMotor.get("treadL");
         treadR = hardwareMap.dcMotor.get("treadR");
+        glyphMotor = hardwareMap.dcMotor.get("glyphMotor");
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        colorSensor = hardwareMap.colorSensor.get("sensor_color_distance");
-       
-        glyphServo = hardwareMap.servo.get("glyphServo");
+        colorSensor = hardwareMap.colorSensor.get("colorSensor");
+
         servoJ = hardwareMap.servo.get("servoJ");
 
 
@@ -61,6 +60,7 @@ public class Red extends LinearOpMode {
         colorSensor.red();
         colorSensor.green();
         colorSensor.blue();
+
        /*
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -75,34 +75,41 @@ public class Red extends LinearOpMode {
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
        */
-       
+
         while (opModeIsActive()) {
-           
-           //to knock off blue jewel
-           servoJ.setPosition(0);
-           
-           if(colorSensor.blue() > colorSensor.red()){
-              frontRight.setPower(move);
-              frontLeft.setPower(move);
-              backRight.setPower(move);
-              backLeft.setPower(move);
-           }
-           
-           else if(colorSensor.red() > colorSensor.blue()){
-              backRight.setPower(-move);
-              frontLeft.setPower(-move);
-              frontRight.setPower(-move);
-              backLeft.setPower(-move);
-           }
-           
-           else {
-              backRight.setPower(0);
-              backLeft.setPower(0);
-              frontRight.setPower(0);
-              frontLeft.setPower(0);
-           }
-           
-           //Vuforia
+
+            frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+            backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+            //to knock off red jewel
+            servoJ.setPosition(0);
+
+            if(colorSensor.blue() > colorSensor.red()){
+                frontRight.setPower(1);
+                frontLeft.setPower(1);
+                backRight.setPower(1);
+                backLeft.setPower(1);
+                sleep(500);
+
+            }
+
+            else if(colorSensor.red() > colorSensor.blue()){
+                frontRight.setPower(-1);
+                frontLeft.setPower(-1);
+                backRight.setPower(-1);
+                backLeft.setPower(-1);
+                sleep(500);
+
+            }
+
+            else {
+                backRight.setPower(0);
+                backLeft.setPower(0);
+                frontRight.setPower(0);
+                frontLeft.setPower(0);
+            }
+
+            //Vuforia
            /*RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                 telemetry.addData("VuMark", "%s visible", vuMark);
@@ -163,6 +170,8 @@ public class Red extends LinearOpMode {
                 telemetry.addData("VuMark", "not visible");
             }
            */
+
+           servoJ.setPosition(1);
         }
     }
 }
