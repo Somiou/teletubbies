@@ -11,20 +11,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-
 
 import java.util.Locale;
 /**
@@ -36,84 +22,70 @@ public class Blue extends LinearOpMode {
 
 //This code is specifically for the case in which 9681 is with the Blue alliance.
 
-    DcMotor backRight;
     DcMotor frontRight;
+    DcMotor frontLeft;
     DcMotor backLeft;
-    DcMotor frontLeft; //wheels
-    DcMotor treadR;
+    DcMotor backRight;
+    DcMotor glyphMotor;
     DcMotor treadL;
+    DcMotor treadR;
 
-    CRServo glyphServo;
-    Servo servoJ; //jewel servo
-    
+    Servo servoJ;
 
-  public static final String TAG = "Vuforia VuMark Sample";
+    ColorSensor colorSensor;
 
-        OpenGLMatrix lastLocation = null;
 
-        /**
-         * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
-         * localization engine.
-         */
-        VuforiaLocalizer vuforia;
-
+    @Override
 
     public void runOpMode() {
 
-        backRight = hardwareMap.dcMotor.get("backRightMotor");
-        frontRight = hardwareMap.dcMotor.get("frontRightMotor");
-        frontLeft = hardwareMap.dcMotor.get("frontLeftMotor");
-        backLeft = hardwareMap.dcMotor.get("backLeftMotor");
+        frontRight = hardwareMap.dcMotor.get("frontRight");
+        frontLeft = hardwareMap.dcMotor.get("frontLeft");
+        backLeft = hardwareMap.dcMotor.get("backRight");
+        backRight = hardwareMap.dcMotor.get("backRight");
+        glyphMotor = hardwareMap.dcMotor.get("glyphMotor");
         treadL = hardwareMap.dcMotor.get("treadL");
-        treadR = hardwareMap.dcMotor.get("treadR")
-
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        colorSensor = hardwareMap.colorSensor.get("sensor_color_distance");
-
-        glyphServo = hardwareMap.crservo.get("glyphServo");
-        servoJ = hardwareMap.servo.get("servoJ");
-
-        telemetry.update();
+        treadR = hardwareMap.dcMotor.get("treadR");
+        colorSensor = hardwareMap.colorSensor.get("colorSensor");
+        
 
         waitForStart();
         colorSensor.red();
         colorSensor.green();
         colorSensor.blue();
-        relicTrackables.activate();
 
         while (opModeIsActive()) {
-            
-            //knocking off jewel
+
+            frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+            backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
             servoJ.setPosition(0);
-            
-            if (colorSensor.red() > colorSensor.blue()){
-                frontRight.setPower(move);
-                frontLeft.setPower(move);
-                backRight.setPower(move);
-                backLeft.setPower(move);
-                
+
+            if(colorSensor.blue() > colorSensor.red()){
+                frontRight.setPower(-1);
+                frontLeft.setPower(-1);
+                backRight.setPower(-1);
+                backLeft.setPower(-1);
+                sleep(500);
             }
-            else if(colorSensor.blue() > colorSensor.red()){
-                frontRight.setPower(-move);
-                frontLeft.setPower(-move);
-                backRight.setPower(-move);
-                backLeft.setPower(-move);
+
+            else if(colorSensor.red() > colorSensor.blue()){
+                frontRight.setPower(1);
+                frontLeft.setPower(1);
+                backRight.setPower(1);
+                backLeft.setPower(1);
+                sleep(500);
             }
-            else{
+
+            else {
+                backRight.setPower(0);
+                backLeft.setPower(0);
                 frontRight.setPower(0);
                 frontLeft.setPower(0);
-                backRight.setPower(0);
-                backLeft,setPower(0);
             }
-            
-            //Vuforia plan
-            /* if 
 
-           
+            servoJ.setPosition(1);
         }
-
 
     }
 }
