@@ -81,25 +81,47 @@ public class Red extends LinearOpMode {
             frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
             backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
+            servoJ.setPosition(-1);
+
             //to knock off red jewel
             servoJ.setPosition(0);
 
             if(colorSensor.blue() > colorSensor.red()){
-                frontRight.setPower(1);
-                frontLeft.setPower(1);
-                backRight.setPower(1);
-                backLeft.setPower(1);
+                frontRight.setPower(.30);
+                frontLeft.setPower(.30);
+                backRight.setPower(.30);
+                backLeft.setPower(.30);
+
                 sleep(500);
+
+                servoJ.setPosition(-1);
+
+                frontRight.setPower(0);
+                frontLeft.setPower(0);
+                backRight.setPower(0);
+                backLeft.setPower(0);
+
+                sleep(38000);
+
 
             }
 
             else if(colorSensor.red() > colorSensor.blue()){
-                frontRight.setPower(-1);
-                frontLeft.setPower(-1);
-                backRight.setPower(-1);
-                backLeft.setPower(-1);
+                frontRight.setPower(-.30);
+                frontLeft.setPower(-.30);
+                backRight.setPower(-.30);
+                backLeft.setPower(-.30);
+
                 sleep(500);
 
+                servoJ.setPosition(-1);
+
+                frontRight.setPower(0);
+                frontLeft.setPower(0);
+                backRight.setPower(0);
+                backLeft.setPower(0);
+
+                sleep(38000);
             }
 
             else {
@@ -107,7 +129,10 @@ public class Red extends LinearOpMode {
                 backLeft.setPower(0);
                 frontRight.setPower(0);
                 frontLeft.setPower(0);
+                sleep(38000);
+
             }
+
 
             //Vuforia
            /*RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
@@ -171,7 +196,13 @@ public class Red extends LinearOpMode {
             }
            */
 
-           servoJ.setPosition(1);
         }
+
+        backRight.setPower(0);
+        backLeft.setPower(0);
+        frontRight.setPower(0);
+        frontLeft.setPower(0);
+
+        sleep(500);
     }
 }
