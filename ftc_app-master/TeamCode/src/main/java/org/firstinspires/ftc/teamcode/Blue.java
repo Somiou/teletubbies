@@ -81,12 +81,12 @@ public class Blue extends LinearOpMode {
             frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
             backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
-            servoJ.setPosition(-1);
+            servoJ.setPosition(1);
 
             //to knock off red jewel
             servoJ.setPosition(0);
 
-            if(colorSensor.red() > colorSensor.blue()){
+            if (colorSensor.red() > colorSensor.blue()) {
                 frontRight.setPower(.30);
                 frontLeft.setPower(.30);
                 backRight.setPower(.30);
@@ -104,9 +104,7 @@ public class Blue extends LinearOpMode {
                 sleep(38000);
 
 
-            }
-
-            else if(colorSensor.blue() > colorSensor.red()){
+            } else if (colorSensor.blue() > colorSensor.red()) {
                 frontRight.setPower(-.30);
                 frontLeft.setPower(-.30);
                 backRight.setPower(-.30);
@@ -122,9 +120,7 @@ public class Blue extends LinearOpMode {
                 backLeft.setPower(0);
 
                 sleep(38000);
-            }
-
-            else {
+            } else {
                 backRight.setPower(0);
                 backLeft.setPower(0);
                 frontRight.setPower(0);
@@ -198,11 +194,5 @@ public class Blue extends LinearOpMode {
 
         }
 
-        backRight.setPower(0);
-        backLeft.setPower(0);
-        frontRight.setPower(0);
-        frontLeft.setPower(0);
-
-        sleep(500);
     }
 }
