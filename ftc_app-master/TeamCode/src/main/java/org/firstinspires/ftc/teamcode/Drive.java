@@ -69,5 +69,12 @@ public class Drive extends OpMode{
 
             glyphMotor.setPower(-gamepad2.right_stick_y/2);
 
-           }
+            if(gamepad2.x){
+                servoJ.setPosition(0);
+            }
+                else{
+                    servoJ.setPosition(-1);
+            }
+
         }
+    }
