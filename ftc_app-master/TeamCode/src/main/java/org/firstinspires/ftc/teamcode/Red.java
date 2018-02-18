@@ -81,7 +81,7 @@ public class Red extends LinearOpMode {
             frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
             backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
-            servoJ.setPosition(-1);
+            servoJ.setPosition(1);
 
             //to knock off red jewel
             servoJ.setPosition(0);
@@ -94,7 +94,7 @@ public class Red extends LinearOpMode {
 
                 sleep(500);
 
-                servoJ.setPosition(-1);
+                servoJ.setPosition(1);
 
                 frontRight.setPower(0);
                 frontLeft.setPower(0);
@@ -156,7 +156,7 @@ public class Red extends LinearOpMode {
                     rZ = rot.thirdAngle;
                     //get rotation factors of target from robot
                 }
-                
+
                 if(vuMark == RelicRecoveryVuMark.LEFT)
                 { //Test to see if Left image and give directions
                     telemetry.addData ("VuMark is", "LEFT");
@@ -166,7 +166,7 @@ public class Red extends LinearOpMode {
                     telemetry.addData ("rX =", rX);
                     telemetry.addData ("rY =", rY);
                     telemetry.addData ("rZ =", rZ);
-                   
+
                 }
                 else if (vuMark == RelicRecoveryVuMark.RIGHT)
                 { //Test to see if Right image and give directions
@@ -189,7 +189,7 @@ public class Red extends LinearOpMode {
                     telemetry.addData ("rZ =", rZ);
                 }
 
-  
+
 
             } else {
                 telemetry.addData("VuMark", "not visible");
@@ -197,12 +197,4 @@ public class Red extends LinearOpMode {
            */
 
         }
-
-        backRight.setPower(0);
-        backLeft.setPower(0);
-        frontRight.setPower(0);
-        frontLeft.setPower(0);
-
-        sleep(500);
     }
-}
